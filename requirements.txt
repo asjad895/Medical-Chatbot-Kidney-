@@ -1,0 +1,9 @@
+ctransformers
+sentence-transformers
+pinecone-client
+langchain
+flask
+pypdf
+python-dotenv
+llama-index
+llama-index[local_models]
