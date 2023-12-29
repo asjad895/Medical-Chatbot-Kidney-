@@ -16,13 +16,14 @@ app = Flask(__name__)
 
 load_dotenv()
 gemini_api_key = os.environ["GEMINI_API_KEY"]
-genai.configure(api_key = gemini_api_key)
+# genai.configure(api_key = gemini_api_key)
 replicate=os.environ.get('replicate')
 PINECONE_API_KEY = os.environ.get('PINECONE_API_KEY')
 PINECONE_API_ENV = os.environ.get('PINECONE_API_ENV')
 OPENAI_API_KEY=os.environ.get('OPENAI_API_KEY')
 
-
+#Loading the index
+docsearch=Pinecone.from_existing_index(index_name,embeddings)
 PROMPT=PromptTemplate(template=prompt_template, input_variables=["context", "question"])
 
 chain_type_kwargs={"prompt": PROMPT}
