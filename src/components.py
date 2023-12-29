@@ -7,7 +7,7 @@ from langchain.prompts import PromptTemplate
 from langchain.llms import CTransformers,OpenAI
 from langchain.chains import RetrievalQA,LLMChain
 from dotenv import load_dotenv
-from prompt import *
+# from prompt import *
 import os
 def download_hugging_face_embeddings():
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
