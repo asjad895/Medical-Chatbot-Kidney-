@@ -9,6 +9,7 @@ from langchain.chains import RetrievalQA,LLMChain
 from dotenv import load_dotenv
 from src.prompt import *
 from store_index import *
+from src.components import *
 import os
 # import google.generativeai as genai
 
