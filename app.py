@@ -2,40 +2,38 @@ from flask import Flask, render_template, jsonify, request
 from src.helper import download_hugging_face_embeddings
 from langchain.vectorstores import Pinecone
 import pinecone
+import replicate
 from langchain.prompts import PromptTemplate
-from langchain.llms import CTransformers
-from langchain.chains import RetrievalQA
+from langchain.llms import CTransformers,OpenAI
+from langchain.chains import RetrievalQA,LLMChain
 from dotenv import load_dotenv
 from src.prompt import *
 from store_index import *
 import os
+# import google.generativeai as genai
 
 app = Flask(__name__)
 
 load_dotenv()
-
+gemini_api_key = os.environ["GEMINI_API_KEY"]
+genai.configure(api_key = gemini_api_key)
+replicate=os.environ.get('replicate')
 PINECONE_API_KEY = os.environ.get('PINECONE_API_KEY')
 PINECONE_API_ENV = os.environ.get('PINECONE_API_ENV')
-
-
-embeddings = download_hugging_face_embeddings()
-
-#Initializing the Pinecone
-pinecone.init(api_key=PINECONE_API_KEY,
-              environment=PINECONE_API_ENV)
-
-#Loading the index
-docsearch=Pinecone.from_existing_index(index_name, embeddings)
+OPENAI_API_KEY=os.environ.get('OPENAI_API_KEY')
 
 
 PROMPT=PromptTemplate(template=prompt_template, input_variables=["context", "question"])
 
 chain_type_kwargs={"prompt": PROMPT}
 
-llm=CTransformers(model="model/llama-2-7b-chat.ggmlv3.q4_0.bin",
-                  model_type="llama",
-                  config={'max_new_tokens':512,
-                          'temperature':0.8})
+# llm=CTransformers(model="../Model/llama-2-7b-chat.ggmlv3.q4_0.bin",
+#                   model_type="llama",
+#                   config={'max_new_tokens':512,
+#                           'temperature':0.8})
+# llm=model = genai.GenerativeModel('gemini-pro')
+# response = model.generate_content("Who is the GOAT in the NBA?")
+llm = OpenAI(openai_api_key=OPENAI_API_KEY)
 print("LLm Llama2-7b chat model...")
 
 
